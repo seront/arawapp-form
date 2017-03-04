@@ -2,6 +2,7 @@ var angular = require('angular');
 require('angular-material');
 require('angular-material/angular-material.css');
 require('angular-animate');
+require('./component/arawapp-form');
 
 var todos = require('./app/todos/todos');
 var App = require('./app/containers/App');
@@ -16,7 +17,7 @@ var routesConfig = require('./routes');
 import './index.scss';
 
 angular
-  .module('app', ['ui.router', 'ngMaterial', 'ngAnimate'])
+  .module('app', ['ui.router', 'ngMaterial', 'ngAnimate', 'arawapp-form'])
   .config(routesConfig)
   .service('todoService', todos.TodoService)
   .component('app', App)
