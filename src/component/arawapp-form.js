@@ -2,21 +2,25 @@ var angular = require('angular');
 require('angular-material');
 require('angular-material/angular-material.css');
 require('angular-animate');
+require('angular-translate');
 
 angular
-  .module('arawapp-form', ['ui.router', 'ngMaterial', 'ngAnimate'])
+  .module('arawapp-form', ['ui.router', 'ngMaterial', 'ngAnimate', 'pascalprecht.translate'])
   .component('arawappForm', {template: require('./arawapp-form.html'),
     bindings: {
       config: '='
     },
-    controller: function ($scope) {
+    controller: function ($scope, $log) {
+      $log.log('arawapp form module');
       var $ctrl = this;
       $ctrl.list = [];
       $ctrl.form = [];
       $ctrl.columns = [];
       $ctrl.verdadero = true;
       $ctrl.falso = false;
-      if (angular.isUndefined($ctrl.config.height)) {
+      if (angular.isUndefined($ctrl.config)) {
+        $log.log('Arawapp-form configuration object is missign');
+      } else if (angular.isUndefined($ctrl.config.height)) {
         $ctrl.config.height = {'max-height': '350px'};
       }
 
@@ -33,9 +37,7 @@ angular
         for (var i = 0; i < $ctrl.form.length; i++) {
           var item = {};
           item.key = $ctrl.form[i];
-          if (angular.isUndefined($ctrl.config.objectConfig[$ctrl.form[i]])) {
-
-          } else if (angular.isUndefined($ctrl.config.objectConfig[$ctrl.form[i]].order)) {
+          if (angular.isDefined($ctrl.config.objectConfig[$ctrl.form[i]].order)) {
             item.order = $ctrl.config.objectConfig[$ctrl.form[i]].order;
           }
           allItems.push(item);
@@ -58,61 +60,58 @@ angular
           }
           $ctrl.columns.push(column);
         }
-//    console.log("$ctrl.columns");
-//    console.log($ctrl.columns);
       };
 
-      $scope.$watch('$ctrl.config.object', function (newValue, oldValue) {
+      $scope.$watch('$ctrl.config.object', function (newValue) {
         $ctrl.list = [];
         $ctrl.form = [];
-        for (var key in newValue) {
-          if (key[0] === '@' || typeof (newValue[key]) === 'function') {
-
-          } else if (typeof (newValue[key]) === 'object') {
-            if (newValue[key] === null) {
-              $ctrl.form.push(key);
+        if (angular.isDefined(newValue)) {
+          for (var key in newValue) {
+            if (key[0] === '@' || angular.isFunction(newValue[key])) {
+//            ignoring the functions and properties that begin with @
+            } else if (angular.isObject(newValue[key])) {
+              if (newValue[key] === null) {
+                $ctrl.form.push(key);
+              } else {
+                for (var key2 in $ctrl.config.include) {
+                  if (key2 === key) {
+                    $ctrl.form.push(key);
+                  }
+                }
+              }
             } else {
-              for (var key2 in $ctrl.config.include) {
-//          console.log("Verificando key custom form " + key2 + ", " + key);
-                if (key2 === key) {
-                  $ctrl.form.push(key);
+              $ctrl.list.push(key);
+              $ctrl.form.push(key);
+            }
+          }
+
+          for (var k in $ctrl.config.exclude) {
+            if (angular.isUndefined(k)) {
+//            do nothing
+            } else {
+              for (var i = 0; i < $ctrl.list.length; i++) {
+                if (k === $ctrl.list[i]) {
+                  $ctrl.list.splice(i, 1);
+                  break;
                 }
               }
             }
-
-          } else {
-            $ctrl.list.push(key);
-            $ctrl.form.push(key);
           }
-        }
-
-        for (var k in $ctrl.config.exclude) {
-          if (angular.isUndefined(k)) {
-
-          } else {
-            for (var i = 0; i < $ctrl.list.length; i++) {
-              if (k === $ctrl.list[i]) {
-                $ctrl.list.splice(i, 1);
-                break;
-              }
-            }
-          }
-
-        }
 //    para excluir del formulario
-        for (var k2 in $ctrl.config.exclude) {
-          if (angular.isUndefined(k2)) {
-
-          } else {
-            for (var i2 = 0; i2 < $ctrl.form.length; i2++) {
-              if (k2 === $ctrl.form[i2]) {
-                $ctrl.form.splice(i2, 1);
-                break;
+          for (var k2 in $ctrl.config.exclude) {
+            if (angular.isUndefined(k2)) {
+//            do nothing
+            } else {
+              for (var i2 = 0; i2 < $ctrl.form.length; i2++) {
+                if (k2 === $ctrl.form[i2]) {
+                  $ctrl.form.splice(i2, 1);
+                  break;
+                }
               }
             }
           }
+          columns();
         }
-        columns();
       });
     }
 
