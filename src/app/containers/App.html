@@ -1,5 +1,10 @@
-<header-component todos="$ctrl.todos"></header-component>
-<main-section
-  todos="$ctrl.todos"
-  filter="$ctrl.filter"
-  ></main-section>
+<md-card>
+    <md-card-title>
+        <md-card-title-text class="md-title">
+            Arawapp Form Demo
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <arawapp-form ng-if="$ctrl.formConfig" config="$ctrl.formConfig"></arawapp-form>
+    </md-card-content>
+</md-card>

@@ -1,0 +1,167 @@
+<div flex ng-class="$ctrl.config.height">
+   <div flex layout="column">
+      <div layout="column" layout-padding>
+         <form name="form" layout="row" flex="100">
+            <div layout="column" flex ng-repeat-start="column in $ctrl.columns track by $index">
+
+               <md-input-container ng-repeat-start="o in column|orderBy: order" md-no-float ng-if="($ctrl.config.exclude[o.key] !== true
+                                && $ctrl.config.objectConfig[o.key].type !== 'switch'
+                                && $ctrl.config.objectConfig[o.key].type !== 'checkbox'
+                                && $ctrl.config.objectConfig[o.key].type !== 'showImage'
+                                && $ctrl.config.objectConfig[o.key].type !== 'file'
+                                && $ctrl.config.objectConfig[o.key].type !== 'show'
+                                && $ctrl.config.objectConfig[o.key].type !== 'map')">
+                  <label translate="{{o.key}}" no-float ng-if="($ctrl.config.objectConfig[o.key].type !== 'radio')">
+
+                  </label>
+                  <!--<span>{{$ctrl.config.objectConfig[o.key].type}}</span>-->
+                  <md-select  ng-if="($ctrl.config.objectConfig[o.key].type === 'select')"
+                              ng-model="$ctrl.config.object[o.key]" 
+                              ng-disabled="($ctrl.config.objectConfig[o.key].options.disabled === 'disabled' || $ctrl.config.disabled)"
+                              ng-change="$ctrl.config.objectConfig[o.key].change($ctrl.config.object[o.key])"
+                              aria-label="{{o.key}}"
+                              ng-class="$ctrl.config.objectConfig[o.key].style">
+                     <md-option ng-repeat="value in $ctrl.config.objectConfig[o.key].values track by $index"
+                                ng-value="value[$ctrl.config.objectConfig[o.key].model]">
+                        <span translate="{{value[$ctrl.config.objectConfig[o.key].show]}}">
+                        </span>
+                     </md-option>
+                  </md-select>
+                  <md-select  ng-if="($ctrl.config.objectConfig[o.key].type === 'select-multiple')"
+                              ng-model="$ctrl.config.object[o.key]" 
+                              ng-disabled="($ctrl.config.objectConfig[o.key].options.disabled === 'disabled' || $ctrl.config.disabled)"
+                              ng-change="$ctrl.config.objectConfig[o.key].change($ctrl.config.object[o.key])"
+                              aria-label="{{o.key}}"
+                              ng-class="$ctrl.config.objectConfig[o.key].style"
+                              multiple>
+                     <md-option ng-repeat="value in $ctrl.config.objectConfig[o.key].values track by $index"
+                                ng-value="value[$ctrl.config.objectConfig[o.key].model]">
+                        <span translate="{{value[$ctrl.config.objectConfig[o.key].show]}}">
+                        </span>
+                     </md-option>
+                  </md-select>
+                  <input  ng-if="($ctrl.config.objectConfig[o.key].dateOnly !== true
+                                   && $ctrl.config.objectConfig[o.key].datetime !== true
+                                   && $ctrl.config.objectConfig[o.key].type !== 'switch'
+                                   && $ctrl.config.objectConfig[o.key].type !== 'number'
+                                   && $ctrl.config.objectConfig[o.key].type !== 'imageShow'
+                                   && $ctrl.config.objectConfig[o.key].type !== 'checkbox'
+                                   && $ctrl.config.objectConfig[o.key].type !== 'select'
+                                   && $ctrl.config.objectConfig[o.key].type !== 'select-multiple'
+                                   && $ctrl.config.objectConfig[o.key].type !== 'radio'
+                                   && $ctrl.config.objectConfig[o.key].type !== 'file')"
+                          ng-model="$ctrl.config.object[o.key]"
+                          type="{{$ctrl.config.objectConfig[o.key].type}}"
+                          ng-disabled="($ctrl.config.objectConfig[o.key].options.disabled === 'disabled' || $ctrl.config.disabled)"
+                          ng-readonly="$ctrl.config.objectConfig[o.key].readonly"
+                          ng-change="$ctrl.config.objectConfig[o.key].change($ctrl.config.object[o.key])"
+                          required="required"
+                          name="{{o.key}}">
+                  <input  ng-if="($ctrl.config.objectConfig[o.key].type === 'number')"
+                          ng-model="$ctrl.config.object[o.key]"
+                          type="{{$ctrl.config.objectConfig[o.key].type}}"
+                          ng-disabled="($ctrl.config.objectConfig[o.key].options.disabled === 'disabled' || $ctrl.config.disabled)"
+                          ng-readonly="$ctrl.config.objectConfig[o.key].readonly"
+                          ng-change="$ctrl.config.objectConfig[o.key].change($ctrl.config.object[o.key])"
+                          required="required"
+                          name="{{o.key}}"
+                          min="{{$ctrl.config.objectConfig[o.key].min}}"
+                          max="{{$ctrl.config.objectConfig[o.key].max}}">
+                  <input ng-if="($ctrl.config.objectConfig[o.key].datetime === true)"
+                         ng-model="$ctrl.config.object[o.key]"
+                         mdc-datetime-picker 
+                         date="$ctrl.config.objectConfig[o.key].date" 
+                         time="$ctrl.config.objectConfig[o.key].time"
+                         min-date="$ctrl.config.objectConfig[o.key].min"
+                         max-date="$ctrl.config.objectConfig[o.key].max"
+                         type="text"
+                         ng-change="$ctrl.config.objectConfig[o.key].change($ctrl.config.object[o.key])"
+                         required="required"
+                         name="{{o.key}}">
+               </md-input-container> 
+               <div ng-if="($ctrl.config.objectConfig[o.key].type === 'show')"
+                    ng-class="$ctrl.config.objectConfig[o.key].style">
+                  <span translate="{{o.key}}">
+                  </span>
+                  <span>
+                     {{$ctrl.config.object[o.key]}}
+                  </span>
+               </div>
+               
+               <md-datepicker ng-if="($ctrl.config.objectConfig[o.key].dateOnly === true)"
+                              ng-model="$ctrl.config.object[o.key]"
+                              ng-disabled="($ctrl.config.objectConfig[o.key].options.disabled === 'disabled' || $ctrl.config.disabled)"
+                              ng-readonly="$ctrl.config.objectConfig[o.key].readonly"
+                              md-min-date="$ctrl.config.objectConfig[o.key].min"
+                              md-max-date="$ctrl.config.objectConfig[o.key].max"
+                              ng-change="$ctrl.config.objectConfig[o.key].change($ctrl.config.object[o.key])"
+                              required="required">
+               </md-datepicker>
+               
+               <md-radio-group ng-model="$ctrl.config.object[o.key]"  
+                               ng-if="($ctrl.config.objectConfig[o.key].type === 'radio')"
+                               ng-disabled="($ctrl.config.objectConfig[o.key].options.disabled === 'disabled' || $ctrl.config.disabled)"
+                               required="required">
+                  <md-radio-button class="md-primary inline-block" 
+                                   ng-repeat="value in $ctrl.config.objectConfig[o.key].values track by $index"
+                                   ng-value="value[$ctrl.config.objectConfig[o.key].model]">
+                     {{value[$ctrl.config.objectConfig[o.key].show]}}
+                  </md-radio-button>
+               </md-radio-group>
+               <md-switch 
+                  ng-if="($ctrl.config.objectConfig[o.key].type === 'switch'
+                                 && $ctrl.config.exclude[o.key] !== true)"
+                  ng-model="$ctrl.config.object[o.key]"
+                  ng-change="$ctrl.config.objectConfig[o.key].change($ctrl.config.object, o.key)"
+                  aria-label="Switch 1"
+                  ng-disabled="($ctrl.config.objectConfig[o.key].options.disabled === 'disabled' || $ctrl.config.disabled)">
+                  <span translate="{{o.key}}"></span>
+               </md-switch>
+                <file-component ng-if="($ctrl.config.objectConfig[o.key].type === 'file')"
+                              config="$ctrl.fileconfig"></file-component>
+                <img ng-if="($ctrl.config.objectConfig[o.key].type === 'imageShow')"
+                     ng-src="{{$ctrl.config.object[o.key]}}" style="max-width: 350px; max-height: 350px">
+               
+               
+               <ui-gmap-google-map ng-if="$ctrl.config.objectConfig[o.key].type === 'map'" 
+                                   ng-class="$ctrl.config.objectConfig[o.key].style"
+                                   center='$ctrl.config.objectConfig[o.key].center'
+                             zoom='$ctrl.config.objectConfig[o.key].zoom'
+                             refresh="true"
+                             control="$ctrl.config.objectConfig[o.key].control"
+                             events='$ctrl.config.objectConfig[o.key].events'>
+            <ui-gmap-marker ng-repeat="marker in $ctrl.config.objectConfig[o.key].markers" coords="marker.coords"
+                            idkey="marker.id"
+                            >               
+            </ui-gmap-marker>
+         </ui-gmap-google-map>
+               
+               
+               <md-checkbox 
+                  ng-repeat-end
+                  ng-if="($ctrl.config.objectConfig[o.key].type === 'checkbox'
+                                 && $ctrl.config.exclude[o.key] !== true)"
+                  ng-model="$ctrl.config.object[o.key]" 
+                  aria-label="{{o.key}}"
+                  ng-class="$ctrl.config.objectConfig[o.key].style"
+                  ng-disabled="($ctrl.config.objectConfig[o.key].options.disabled === 'disabled' || $ctrl.config.disabled)">
+                  <span translate="{{o.key}}"></span>
+               </md-checkbox>
+               
+
+            </div>
+            <div flex="5" ng-repeat-end ng-if="(!$last)">
+            </div>
+         </form>
+      </div>
+      <div layout="row">
+         <md-button ng-repeat="action in $ctrl.config.actions" ng-class="action.class" 
+                    ng-click="action.action($ctrl.config.object)" ng-disabled="(action.disabled || $ctrl.config.disabled)"
+                    aria-label="{{action.name}}">
+            <md-icon ng-if="action.icon" style="color: {{action.iconColor}};">{{action.icon}}</md-icon>
+            <span translate="{{action.name}}"></span>
+         </md-button>
+      </div>
+   </div>
+</div>
+
