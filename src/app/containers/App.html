@@ -1,5 +1,10 @@
 <md-card>
+    <md-card-title>
+        <md-card-title-text class="md-title">
+            Arawapp Form Demo
+        </md-card-title-text>
+    </md-card-title>
     <md-card-content>
-        <arawapp-form config="$ctrl.formConfig"></arawapp-form>
+        <arawapp-form ng-if="$ctrl.formConfig" config="$ctrl.formConfig"></arawapp-form>
     </md-card-content>
 </md-card>

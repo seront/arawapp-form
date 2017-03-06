@@ -3,9 +3,9 @@ module.exports = {
   controller: App
 };
 
-function App() {
+function App($log, $timeout) {
   var $ctrl = this;
-
+  $log.log('iniciando App');
   var blankObject = {
     name: '',
     location: '',
@@ -134,12 +134,16 @@ function App() {
   };
   var formInclude = {};
 
-  $ctrl.formConfig = {
-    columns: 2,
-    object: blankObject,
-    objectConfig: objectConfig,
-    exclude: formExclude,
-    include: formInclude
-  };
+  $timeout(function () {
+    $ctrl.formConfig = {
+      columns: 2,
+      object: blankObject,
+      objectConfig: objectConfig,
+      exclude: formExclude,
+      include: formInclude
+    };
+  }, 3000);
+
+  $log.log('luego delformconfg');
 }
 

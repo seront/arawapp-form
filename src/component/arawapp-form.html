@@ -120,7 +120,7 @@
                 <file-component ng-if="($ctrl.config.objectConfig[o.key].type === 'file')"
                               config="$ctrl.fileconfig"></file-component>
                 <img ng-if="($ctrl.config.objectConfig[o.key].type === 'imageShow')"
-                     src="{{$ctrl.config.object[o.key]}}" style="max-width: 350px; max-height: 350px">
+                     ng-src="{{$ctrl.config.object[o.key]}}" style="max-width: 350px; max-height: 350px">
                
                
                <ui-gmap-google-map ng-if="$ctrl.config.objectConfig[o.key].type === 'map'" 

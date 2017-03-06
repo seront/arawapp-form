@@ -11,8 +11,8 @@ angular
       config: '='
     },
     controller: function ($scope, $log) {
-      $log.log('arawapp form module');
       var $ctrl = this;
+      $log.log('arawapp form module');
       $ctrl.list = [];
       $ctrl.form = [];
       $ctrl.columns = [];
